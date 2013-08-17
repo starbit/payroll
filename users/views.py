@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.contrib.auth import login, authenticate,logout
-from .forms import JoinForm, ResetPasswordForm, ChangePasswordForm
+from .forms import ResetPasswordForm, ChangePasswordForm
 from django.contrib.auth.forms import PasswordResetForm
 from django.shortcuts import redirect, render_to_response, HttpResponse,get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
@@ -16,7 +16,7 @@ from django.template import RequestContext,Template, Context
 
 @login_required
 def user(request):
-    return 
+    return TemplateResponse(request, 'users/user.html')
 
 def reset_psw(request):
     if request.method == 'POST':
@@ -34,7 +34,7 @@ def reset_psw(request):
 def reset_psw_confirm(request, uid, token):
     from django.utils.http import base36_to_int
     user = User.objects.get(pk = base36_to_int(uid))
-    
+
     if request.method == 'POST':
         form = ResetPasswordForm(user, request.POST)
         if form.is_valid():

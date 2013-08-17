@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block more_header %}
+    <script>
+        $(function(){
+
+            var base_time = Date.now();
+
+            function show_time() {
+                var during = parseInt((Date.now() - base_time) / 1000, 10)
+                var hours = parseInt(during / 3600, 10)
+                during = during % 3600
+                var minutes = parseInt(during / 60, 10)
+                during = during % 60
+                var seconds = during
+                $('#time_field').html(hours + "小时" + minutes + "分钟" + seconds + "秒");
+            };
+
+            setInterval(show_time, 1000);
+        })
+    </script>
+{% endblock%}
+
+{% block content %}
+    <h1>陆明那</h1>
+    <hr>
+
+    <p id="time_field">
+    </p>
+    <form action="arrive">
+        <button class="btn btn-success">我来上班了</button>
+    </form>
+
+    <form action="leave">
+        <button class="btn btn-danger">我下班班了</button>
+    </form>
+    <hr>
+    个人信息  修改个人信息  小时工  现在的支付方式  请假
+    <hr>
+    上个工作周期的工资  *距下一次发工资还有多少天
+    <hr>
+    上个工作周期工作多少小时
+    <hr>
+    昨天工作多少小时
+    <hr>
+    上个工作周期的业绩 添加业务信息
+    <hr>
+    查看工作时间报告
+    <hr>
+    查看年初至今工资报告
+{% endblock %}
