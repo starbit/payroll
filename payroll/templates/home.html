@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Payroll{% endblock %}
+    
+{% block content %}
+<div class="offset2">
+    <form class="form" method="post">
+        {%csrf_token%}
+        <fieldset>
+            
+            <div class="control-group">
+                {{form.non_field_errors}}<br/>
+                <label class="control-label" for="id_username">帐号</label>
+                <div class="controls">
+                    <input type="text" id="id_username" name="username" class="input-xlarge" placeholder="">
+                        <span>{{form.username.errors.0}}</span>
+                        </div>
+            </div>
+            
+            <div class="control-group">
+                
+                <label for="id_password" class="control-label">密码</label>
+                <div class="controls">
+                    <input type="password" class="input-xlarge" id="id_password" name="password">
+                        <span class="clearfix">{{form.password.erros.0}}</span>
+                        </div>
+            </div>
+            <div>
+                <a href="/reset/" class="forgot">忘记密码</a><br/><br/><br/>
+            </div>
+            <div class="form-actions">
+                <button class="btn-primary" type="submit">登录</button>
+            
+            </div>
+            
+        </fieldset>
+    </form>
+</div>
+
+{% endblock %}
+
+

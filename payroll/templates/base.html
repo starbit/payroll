@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %} {% endblock %}
+    </title>
+    <link href="/static/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="/static/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+    <style type="text/css">
+            html{
+                padding:10px 0px;
+            }
+            body {
+                padding-top: 20px;
+                padding-bottom: 40px;
+            }
+            body, input, button, textarea, .page-stat_number {
+                font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+            }
+            .extraheader{
+                background-color: #F3F3F3;
+                padding-bottom: 15px;
+                padding-top: 25px;
+            }
+            .extratitle{
+                font-size:25px;
+            }
+            .header1{
+                font-size:30px;
+                font-weight:bold;
+                color:#0066ff;
+
+            }
+            .form-actions{
+                background-color: #fff;
+                border-style:none
+            }
+
+            .header1:hover{
+                color:#0066ff;
+                text-decoration:none;
+                
+            }
+            .header2{
+                font-size:30px;
+                font-weight:bold;
+                color:#00ccff;
+            }
+            .header2:hover{
+                color:#00ccff;
+                text-decoration:none;
+            }
+            div{margin:0;border:0;padding:0;}
+
+            fieldset {
+                padding: 20px 0 ;
+            }
+
+            .banner1{
+                font-size:80px;
+                font-weight:bold;
+                color:#434343;
+            }
+            .banner2{
+                font-size:80px;
+                font-weight:bold;
+                color:#00ccff;
+                
+            }
+            .forgot{
+                color:#00ccff;
+                font-size:18px;
+                
+            }
+            .forgot:hover{
+                text-decoration:none;
+                color:#00ccff;
+            }
+            .btn-primary:hover{
+                text-decoration:none;
+                color:white;
+                border-style:none;
+                background:#3cf;
+            }
+            
+            footer[role="contentinfo"] {
+                padding: 15px 0 0 0;
+                font-size: 18px;
+                border-top: 2px solid #ddd;
+                text-align:center;
+                font-weight:normal;
+            }
+            label{
+                font-size:17px;
+                
+            }
+            .fileinput-button {
+                position: relative;
+                overflow: hidden;
+                float: left;
+                margin-right: 4px;
+            }
+            .fileinput-button input {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                border: solid transparent;
+                border-width: 0 0 100px 200px;
+                opacity: 0;
+                filter: alpha(opacity=0);
+                -moz-transform: translate(-300px, 0) scale(4);
+                direction: ltr;
+                cursor: pointer;
+            }
+            /* Fix for IE 6: */
+            *html .fileinput-button {
+                line-height: 22px;
+                margin: 1px -3px 0 0;
+            }
+        
+            /* Fix for IE 7: */
+            *+html .fileinput-button {
+                margin: 1px 0 0 0;
+            }
+        
+            .form-horizontal .control-label {
+                text-align:left;
+            }
+        
+
+            span{
+                font-size:18px;
+            }
+            legend{
+                font-size:23px;
+                font-weight:bold;
+                width:940px;
+            }
+            .container{
+                min-height:84px;
+            }
+            a:hover{
+                text-decoration:none;
+            }
+            .btn-primary{
+                display: inline-block;
+                text-align: center;
+                padding: 16px 0px 18px 0px;
+                font-size: 36px;
+                line-height: 40px;
+                min-width: 200px;
+                -webkit-border-radius: 42px;
+                -moz-border-radius: 42px;
+                -ms-border-radius: 42px;
+                -o-border-radius: 42px;
+                border-radius: 42px;
+                color: white;
+                background: #3CF;
+                font-weight: bold;
+                text-decoration: none;
+                border: 0 none currentColor;
+                cursor: pointer;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                user-select: none;
+                -webkit-appearance: none;
+            }
+            html, body, #wrap {height: 100%;}
+            body > #wrap {height: auto; min-height: 100%;}
+            #main {padding-bottom: 100px;}  /* 必须使用和footer相同的高度 */
+            #footer {
+                position: relative;
+                margin-top: -100px; /* footer高度的负值 */
+                height: 100px;
+                clear:both;
+            }
+            .clearfix:after {
+                content: ".";
+                display: block;
+                height: 0;
+                clear: both;
+                visibility: hidden;}
+            .clearfix {display: inline-block;}
+            /* Hides from IE-mac \*/
+            * html .clearfix { height: 1%;}
+            .clearfix {display: block;}
+            /* End hide from IE-mac */
+        </style>
+            <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+            <!--[if lt IE 9]>
+             <script src="</SCRIPT'">http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+             <![endif]-->
+        <!--
+            <script type="text/javascript">
+                var Sys = {};
+                var ua = navigator.userAgent.toLowerCase();
+                var s;
+                (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+                (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+                (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+                (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+                (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+                function go(){
+                    location.replace("http://www.google.com/chrome");
+                }
+                //redirect
+                if (Sys.ie=='6.0'|Sys.ie=='7.0'|Sys.ie=='8.0') go();
+            </script>-->
+
+</head>
+<body>
+    <div class="container" id="wrap">
+        <div class="container clearfix" id="main">
+	    <div class="container">
+        </div>
+        <div class = "container">
+            {% block content %}
+            {% endblock %}
+        </div>
+        </div>
+    </div>
+    <div id="footer" class="container">
+        <footer role="contentinfo" style="color:#AEAEAE">
+            Beta · Powered by Django · Created in JLU
+        </footer>
+    </div>
+</body>
+</html>
