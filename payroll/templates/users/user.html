@@ -24,16 +24,21 @@
 {% block content %}
     <h1>陆明那</h1>
     <hr>
-
-    <p id="time_field">
-    </p>
-    <form action="arrive">
-        <button class="btn btn-success">我来上班了</button>
-    </form>
-
-    <form action="leave">
-        <button class="btn btn-danger">我下班班了</button>
-    </form>
+    {% if timecardrecord %}
+        {% if work_done %}
+            <span>今天工作了{{ work_time }}</span>
+        {% else %}
+            <span>今天已经工作:</span>
+            <span id="time_field"></span>
+            <form action="leave">
+                <button class="btn btn-danger">我下班班了</button>
+            </form>
+        {% endif%}
+    {% else %}
+        <form action="arrive">
+            <button class="btn btn-success">我来上班了</button>
+        </form>
+    {% endif %}
     <hr>
     个人信息  修改个人信息  小时工  现在的支付方式  请假
     <hr>
@@ -43,7 +48,8 @@
     <hr>
     昨天工作多少小时
     <hr>
-    上个工作周期的业绩 添加业务信息
+    <a href="add_purchase" class="btn btn-success" target="_blank">添加采购记录</a>
+    <a href="purchases" class="btn btn-success" target="_blank">采购记录历史</a>
     <hr>
     查看工作时间报告
     <hr>

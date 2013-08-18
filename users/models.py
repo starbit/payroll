@@ -20,17 +20,25 @@ PAYMENT_METHOD=(
 
                 )
 
-
+EMPLOYEE_TYPE=(
+                ('hourly','钟点工'),
+                ('salaried','全职员工'),
+                ('commissioned','销售人员'),
+    )
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User)
     phone = models.CharField(max_length=11, null=True)
     name = models.CharField(max_length=20)
-    payroll = models.ForeignKey(Payroll)
-    timecard = models.ForeignKey(Timecard)
-    payment_method = models.CharField(max_length=10, choices=PAYMENT_METHOD)
+    # payroll = models.ForeignKey(Payroll)
 
+    payment_method = models.CharField(max_length=10, choices=PAYMENT_METHOD)
     employee_status = models.CharField(max_length=20, choices=STATUS)
+    hourly_salary = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    monthly_salary = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    # purchase_order = models.ManyToManyField(PurchaseOrder)
+    commission_rate = models.DecimalField(max_digits=3, decimal_places=3, default=0)
+    employee_type = models.CharField(max_length=15, choices=EMPLOYEE_TYPE, default='salaried')
 
     def is_pay_day(self):
         pass
@@ -45,42 +53,9 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.name
 
-    class Meta:
-        abstract = True
 
+def create_user_profile(sender=None, instance=None, created=True, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
 
-class HourlyEmployee(UserProfile):
-    hourly_salary = models.DecimalField(max_digits=6, decimal_places=2)
-    def change_to_salaried():
-        pass
-    def change_to_commissioned():
-        pass
-
-
-
-
-class SalariedEmployee(UserProfile):
-    monthly_salary = models.DecimalField(max_digits=8, decimal_places=2)
-    def change_to_commissioned():
-        pass
-    def change_to_hourly():
-        pass
-
-
-
-class CommissionedEmployee(SalariedEmployee):
-    purchase_order = models.ManyToManyField(PurchaseOrder)
-    commission_rate = models.DecimalField(max_digits=3, decimal_places=3)
-    def change_to_hourly():
-        pass
-    def change_to_salaried():
-        pass
-
-
-
-# def create_user_profile(sender=None, instance=None, created=True, **kwargs):
-#     if created:
-#         UserProfile.objects.create(user=instance)
-
-# models.signals.post_save.connect(create_user_profile, sender=User)
-#
+models.signals.post_save.connect(create_user_profile, sender=User)

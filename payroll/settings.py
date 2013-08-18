@@ -1,7 +1,7 @@
 # Django settings for payroll project.
 #-*- coding:utf-8 -*-
 
-import os, sys
+import os
 PROJECT_ROOT = os.path.dirname(__file__)
 
 DEBUG = True
@@ -104,7 +104,6 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:

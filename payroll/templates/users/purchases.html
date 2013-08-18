@@ -1,0 +1,30 @@
+{% extends "base.html"  %}
+{% block title %}历史采购{% endblock %}
+{% block content %}
+<h1>{{ request.user }}的采购历史</h1>
+<a href="{% url 'user_add_purchase'%}" class="btn btn-success">添加采购</a>
+<a href="{% url 'user'%}" class="btn">返回</a>
+<ul>
+    {% for purchases in object_list %}
+
+    <li>{{ purchases.time|date }} / {{ purchases.amount }} / {{ purchases.description }}</li>
+    {% empty %}
+    <li>暂无采购记录</li>
+    {% endfor %}
+</ul>
+{% if is_paginated %}
+<div class="pagination">
+    <span class="page-links">
+        {% if page_obj.has_previous %}
+        <a href="{% url 'user_purchases' %}?page={{ page_obj.previous_page_number }}">上一页</a>
+        {% endif %}
+        <span class="page-current">
+            第 {{ page_obj.number }} 页（共{{ page_obj.paginator.num_pages }}页）
+        </span>
+        {% if page_obj.has_next %}
+        <a href="{% url 'user_purchases' %}?page={{ page_obj.next_page_number }}">下一页</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+{% endblock %}

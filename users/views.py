@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime, date
 from django import forms
 from django.template.response import TemplateResponse
 from payroll.settings import DEFAULT_FROM_EMAIL
-from django.db.transaction import commit_on_success
-from django.views.decorators.csrf import csrf_exempt
+# from django.db.transaction import commit_on_success
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
+# from django.core.mail import send_mail
 from django.contrib.auth import login, authenticate,logout
 from .forms import ResetPasswordForm, ChangePasswordForm
 from django.contrib.auth.forms import PasswordResetForm
@@ -14,9 +15,59 @@ from django.shortcuts import redirect, render_to_response, HttpResponse,get_obje
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext,Template, Context
 
+from timecard.models import TimecardRecord
+from payrollapp.forms import PurchaseOrderForm
+
+
 @login_required
 def user(request):
-    return TemplateResponse(request, 'users/user.html')
+    user = request.user
+    try:
+        timecardrecord = user.timecardrecord_set.filter(date=date.today()).get()
+        if timecardrecord and timecardrecord.leave_time:
+            work_done = True
+            work_time = timecardrecord.leave_time - timecardrecord.arrive_time
+    except TimecardRecord.DoesNotExist:
+        pass
+
+    return render_to_response('users/user.html', locals())
+
+@login_required
+def arrive(request):
+    user = request.user
+    arrive_time = datetime.now()
+    timecardrecord_date = date.today()
+    user.timecardrecord_set.create(arrive_time=arrive_time, date=timecardrecord_date)
+    return redirect('/user')
+
+
+@login_required
+def leave(request):
+    user = request.user
+    timecardrecord = user.timecardrecord_set.filter(date=date.today(), leave_time__isnull=True).get()
+    timecardrecord.leave_time = datetime.now()
+    timecardrecord.save()
+    return redirect('/user')
+
+
+@login_required
+def add_purchase(request):
+    if request.method == 'POST':
+        form = PurchaseOrderForm(request.POST)
+        if form.is_valid():
+            purchase = form.save(commit=False)
+            purchase.user_id = request.user.id
+            purchase.save()
+            return redirect('/user/purchases')
+    else:
+        form = PurchaseOrderForm()
+    return render_to_response('users/add_purchase.html', locals())
+
+
+@login_required
+def purchases(request):
+    return render_to_response('users/purchases.html', locals())
+
 
 def reset_psw(request):
     if request.method == 'POST':
