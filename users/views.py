@@ -50,25 +50,6 @@ def leave(request):
     return redirect('/user')
 
 
-@login_required
-def add_purchase(request):
-    if request.method == 'POST':
-        form = PurchaseOrderForm(request.POST)
-        if form.is_valid():
-            purchase = form.save(commit=False)
-            purchase.user_id = request.user.id
-            purchase.save()
-            return redirect('/user/purchases')
-    else:
-        form = PurchaseOrderForm()
-    return render_to_response('users/add_purchase.html', locals())
-
-
-@login_required
-def purchases(request):
-    return render_to_response('users/purchases.html', locals())
-
-
 def reset_psw(request):
     if request.method == 'POST':
         form = PasswordResetForm(request.POST)

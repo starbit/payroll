@@ -2,18 +2,12 @@ from django.conf.urls import patterns, include, url
 from users.forms import LoginForm
 from django.contrib.auth import views as auth_views
 from django.contrib import admin
-from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required
 
-class ReqListView(ListView):
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        c = super(ReqListView, self).get_context_data(**kwargs)
-        # add the request to the context
-        c.update({ 'request': self.request })
-        return c
+from payrollapp.views import PurchaseOrderCreate, PurchaseOrderUpdate, PurchasesView, PurchaseOrderDelete
+from django.views.generic import DetailView
 
-class UserPurchaseView(ReqListView):
+class PurchaseDetailView(DetailView):
     paginate_by = 10
 
     def get_queryset(self):
@@ -31,8 +25,11 @@ urlpatterns = patterns('',
     url(r'^user/$', 'users.views.user', name='user'),
     url(r'^user/arrive$', 'users.views.arrive', name='user_arrive'),
     url(r'^user/leave$', 'users.views.leave', name='user_leave'),
-    url(r'^user/add_purchase$', 'users.views.add_purchase', name='user_add_purchase'),
-    url(r'^user/purchases$', login_required(UserPurchaseView.as_view()), name='user_purchases'),
+
+    url(r'^user/purchases/new$', login_required(PurchaseOrderCreate.as_view()), name='new_purchase'),
+    url(r'^user/purchases$', login_required(PurchasesView.as_view()), name='user_purchases'),
+    url(r'^user/purchase/(?P<pk>[\w-]+)/edit$', login_required(PurchaseOrderUpdate.as_view()), name='edit_purchase'),
+    url(r'^user/purchase/(?P<pk>[\w-]+)$', login_required(PurchaseOrderDelete.as_view()), name='purchase'),
 
     url(r'^$', auth_views.login, {'template_name': 'home.html', 'authentication_form': LoginForm }, name = 'home'),
     url(r'^reset/$', 'users.views.reset_psw',name='reset_psw'),

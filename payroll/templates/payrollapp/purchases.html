@@ -2,12 +2,17 @@
 {% block title %}历史采购{% endblock %}
 {% block content %}
 <h1>{{ request.user }}的采购历史</h1>
-<a href="{% url 'user_add_purchase'%}" class="btn btn-success">添加采购</a>
+<a href="{% url 'new_purchase'%}" class="btn btn-success">添加采购</a>
 <a href="{% url 'user'%}" class="btn">返回</a>
 <ul>
-    {% for purchases in object_list %}
+    {% for purchase in object_list %}
 
-    <li>{{ purchases.time|date }} / {{ purchases.amount }} / {{ purchases.description }}</li>
+    <li>{{ purchase.time|date }} / {{ purchase.amount }} / {{ purchase.description }} /
+        <a href="{% url 'edit_purchase' purchase.pk %}" class="btn">修改</a>
+        <form style="display:inline;" action="{% url 'purchase' purchase.pk %}" method="post">
+            <input type="submit" value="删除" class="btn btn-danger" onclick="return confirm('确定要删除么？')"/>
+        </form>
+    </li>
     {% empty %}
     <li>暂无采购记录</li>
     {% endfor %}
