@@ -7,7 +7,7 @@ from payroll.settings import DEFAULT_FROM_EMAIL
 # from django.db.transaction import commit_on_success
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth.decorators import login_required
-# from django.core.mail import send_mail
+from django.core.mail import send_mail
 from django.contrib.auth import login, authenticate,logout
 from .forms import ResetPasswordForm, ChangePasswordForm
 from django.contrib.auth.forms import PasswordResetForm
@@ -17,7 +17,7 @@ from django.template import RequestContext,Template, Context
 
 from timecard.models import TimecardRecord
 from payrollapp.forms import PurchaseOrderForm
-
+from users.forms import ContactForm
 
 @login_required
 def user(request):
@@ -77,7 +77,7 @@ def reset_psw_confirm(request, uid, token):
     form = ResetPasswordForm(user)
     return TemplateResponse(request, 'users/reset_psw_confirm.html', {'form': form})
 
-
+@login_required
 def _set_psw(request):
     if request.method == 'POST':
         form = ChangePasswordForm(user = request.user, data = request.POST)
@@ -89,7 +89,41 @@ def _set_psw(request):
     form = ChangePasswordForm(user = request.user)
     return TemplateResponse(request, 'users/setting_psw.html', {'form': form})
 
+@login_required
+def settings(request, item):
+    if item == '':
+        return TemplateResponse(request, 'users/settings.html')
+    elif item == "password":
+        return _set_psw(request)
+    elif item == "payment":
+        return change_payment_method(request)
+    else:
+        raise Http404("no setting")
 
+@login_required
+def change_payment_method(request):
+    return
+
+@login_required
+def contact(request):
+    if request.method=='POST':
+        form=ContactForm(request.POST)
+        if form.is_valid():
+            topic = form.cleaned_data['topic']
+            message = form.cleaned_data['message']
+            sender = form.cleaned_data.get('sender','mua@mua.com')
+            send_mail(
+                      'feedback from user, topic: %s sender:%s'%(topic,sender),
+                      message,'marvin@xueni.net',['marvin@xueni.net']
+                      )
+            return redirect('/thanks/')
+    else:
+        form=ContactForm()
+    return TemplateResponse(request,'contact.html',{'form':form})
+
+@login_required
+def thanks(request):
+    return TemplateResponse(request,'thanks.html')
 
 def server_error(request, template_name='500.html'):
     r = render_to_response(template_name,

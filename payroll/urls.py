@@ -25,6 +25,9 @@ urlpatterns = patterns('',
     url(r'^user/$', 'users.views.user', name='user'),
     url(r'^user/arrive$', 'users.views.arrive', name='user_arrive'),
     url(r'^user/leave$', 'users.views.leave', name='user_leave'),
+    url(r'^user/settings/(?P<item>\w*)$', 'users.views.settings', name='user_settings'),
+    url(r'^contact/$', 'users.views.contact',name='contact'),
+    url(r'^thanks/$', 'users.views.thanks', name='thanks'),
 
     url(r'^user/purchases/new$', login_required(PurchaseOrderCreate.as_view()), name='new_purchase'),
     url(r'^user/purchases$', login_required(PurchasesView.as_view()), name='user_purchases'),
@@ -36,7 +39,7 @@ urlpatterns = patterns('',
 
     url(r'^reset/confirm/(?P<uid>\w+)/(?P<token>[-\w]+)/$', 'users.views.reset_psw_confirm', name = 'reset_psw_confirm'),
 
-    url(r'^user/logout/$', auth_views.logout, {'template_name': 'user.html','next_page':'/'}, name='logout'),
+    url(r'^logout/$', auth_views.logout, {'template_name': 'user.html','next_page':'/'}, name='logout'),
 
 
     # url(r'^payroll/', include('payroll.foo.urls')),

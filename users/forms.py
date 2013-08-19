@@ -8,8 +8,8 @@ from django.forms.util import ErrorList
 from django.forms import ModelForm
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(error_messages = {'required': u'用户名不能为空诶童鞋～'},max_length = 10,min_length=8)
-    password = forms.CharField(error_messages = {'required': u'密码不能为空诶少年～'},max_length = 16,min_length = 8,widget = forms.PasswordInput)
+    username = forms.CharField(error_messages = {'required': u'用户名不能为空哦少侠～'})
+    password = forms.CharField(error_messages = {'required': u'密码不能为空哦少侠～'},widget = forms.PasswordInput)
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
@@ -30,12 +30,27 @@ class GetPasswordForm(forms.Form):
         return email
 
 class ChangePasswordForm(PasswordChangeForm):
-    old_password  = forms.CharField(label="原密码", widget=forms.PasswordInput, error_messages = {'required': u'新密码不能为空哦', 'min_length':u'至少8个字符啦', 'max_length':u'最多16个字符啦'}, min_length = 8, max_length = 16)
-    new_password1 = forms.CharField(label="新密码", widget=forms.PasswordInput, error_messages = {'required': u'新密码不能为空哦', 'min_length':u'至少8个字符啦', 'max_length':u'最多16个字符啦'}, min_length = 8, max_length = 16)
-    new_password2 = forms.CharField(label="新密码确认", widget=forms.PasswordInput, error_messages = {'required': u'新密码不能为空哦', 'min_length':u'至少8个字符啦', 'max_length':u'最多16个字符啦'}, min_length = 8, max_length = 16)
+    old_password  = forms.CharField(label="原密码", widget=forms.PasswordInput, error_messages = {'required': u'新密码不能为空哦'})
+    new_password1 = forms.CharField(label="新密码", widget=forms.PasswordInput, error_messages = {'required': u'新密码不能为空哦'})
+    new_password2 = forms.CharField(label="新密码确认", widget=forms.PasswordInput, error_messages = {'required': u'新密码不能为空哦'})
 
 
 class ResetPasswordForm(SetPasswordForm):
-    new_password1 = forms.CharField(label="新密码", widget=forms.PasswordInput, error_messages = {'required': u'新密码不能为空哦', 'min_length':u'至少8个字符啦', 'max_length':u'最多16个字符啦'}, min_length = 8, max_length = 16)
-    new_password2 = forms.CharField(label="新密码确认", widget=forms.PasswordInput, error_messages = {'required': u'新密码不能为空哦', 'min_length':u'至少8个字符啦', 'max_length':u'最多16个字符啦'}, min_length = 8, max_length = 16)
+    new_password1 = forms.CharField(label="新密码", widget=forms.PasswordInput, error_messages = {'required': u'新密码不能为空哦'})
+    new_password2 = forms.CharField(label="新密码确认", widget=forms.PasswordInput, error_messages = {'required': u'新密码不能为空哦'})
+TOPIC=(
+       ('ux','用户体验'),
+       ('bug','有bug!'),
+       ('suggestion','建议'),
+       )
+
+class ContactForm(forms.Form):
+    topic = forms.ChoiceField(choices=TOPIC,label="主题")
+    message = forms.CharField(widget=forms.Textarea(),label="内容",error_messages = {'required': u'内容为空？元芳，这不科学。'})
+    sender = forms.EmailField(required=False,label="联系邮箱")
+    def clean_message(self):
+        message = self.cleaned_data.get('message','')
+        if len(message) < 8:
+            raise forms.ValidationError("元芳多说一点别那么小气啦!")
+        return message
 

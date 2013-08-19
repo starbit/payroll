@@ -9,21 +9,21 @@
       <div class="login-screen">
         {{form.non_field_errors}}
         <div class="login-icon">
-            <img src="images/login/icon.png" alt="Welcome to Mail App">
-            <h4>Welcome to <small>Mail App</small></h4>
+            <img src="/static/img/logo.png" alt="Welcome to PayrollApp">
+            <h4>Welcome to <small>PayrollApp</small></h4>
         </div>
         <div class="login-form">
             <div class="control-group">
-              <input type="text" name="username" class="login-field" value="" placeholder="Enter your name" id="id_username">
+              <input type="text" name="username" class="login-field" value="" placeholder="账号" id="id_username">
               <span>{{form.username.errors.0}}</span>
           </div>
 
           <div class="control-group">
-              <input type="password" class="login-field" value="" placeholder="Password" id="login-pass">
+              <input type="password" name="password"class="login-field" value="" placeholder="密码" id="login-pass">
               <span class="clearfix">{{form.password.erros.0}}</span>
           </div>
-          <button type="submit" class="btn btn-primary btn-large btn-block" href="#">Login</button>
-          <a class="login-link" href="#">Lost your password?</a>
+          <button type="submit" class="btn btn-primary btn-large btn-block" href="#">登录</button>
+          <a class="login-link" href="/reset/">忘记密码?</a>
       </div>
   </div>
 </div>
