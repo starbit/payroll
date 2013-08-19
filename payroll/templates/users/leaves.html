@@ -1,0 +1,30 @@
+{% extends "base.html"  %}
+{% block title %}请假历史{% endblock %}
+{% block content %}
+<h1>{{ request.user }}的请假历史</h1>
+<a href="{% url 'user'%}" class="btn">返回</a>
+<ul>
+    {% for leave in object_list %}
+
+    <li>{{ leave.date|date }} 请假一天 </li>
+    {% empty %}
+    <li>暂无请假记录</li>
+    {% endfor %}
+</ul>
+
+{% if is_paginated %}
+<div class="pagination">
+    <span class="page-links">
+        {% if page_obj.has_previous %}
+        <a href="{% url 'user_leaves' %}?page={{ page_obj.previous_page_number }}">上一页</a>
+        {% endif %}
+        <span class="page-current">
+            第 {{ page_obj.number }} 页（共{{ page_obj.paginator.num_pages }}页）
+        </span>
+        {% if page_obj.has_next %}
+        <a href="{% url 'user_leaves' %}?page={{ page_obj.next_page_number }}">下一页</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+{% endblock %}

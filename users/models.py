@@ -58,4 +58,8 @@ def create_user_profile(sender=None, instance=None, created=True, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
 
+class Leave(models.Model):
+    user = models.ForeignKey(User)
+    date = models.DateTimeField(blank=False)
+
 models.signals.post_save.connect(create_user_profile, sender=User)

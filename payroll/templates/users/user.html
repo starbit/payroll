@@ -3,9 +3,11 @@
 {% block more_header %}
     <script>
         $(function(){
-
-            var base_time = Date.now();
-
+            {% if arrive_time %}
+                var base_time = new Date("{{arrive_time}}");
+            {% else %}
+                var base_time = Date.now();
+            {% endif %}
             function show_time() {
                 var during = parseInt((Date.now() - base_time) / 1000, 10)
                 var hours = parseInt(during / 3600, 10)
@@ -29,25 +31,30 @@
             <li><a href='/logout/'>退出</a></li>
         </ul>
     </div>
-<h1>陆明那</h1>
+    <h1>陆明那</h1>
     <hr>
-    {% if timecardrecord %}
-        {% if work_done %}
-            <span>今天工作了{{ work_time }}</span>
-        {% else %}
-            <span>今天已经工作:</span>
-            <span id="time_field"></span>
-            <form action="leave">
-                <button class="btn btn-danger">我下班班了</button>
-            </form>
-        {% endif%}
+    {% if leave_record %}
+        <span>今天您已经请假</span>
     {% else %}
-        <form action="arrive">
-            <button class="btn btn-success">我来上班了</button>
-        </form>
+        {% if timecardrecord %}
+            {% if work_done %}
+                <span>今天工作了{{ work_time }}</span>
+            {% else %}
+                <span>今天已经工作:</span>
+                <span id="time_field"></span>
+                <form action="leave">
+                    <button class="btn btn-danger">我下班班了</button>
+                </form>
+            {% endif%}
+        {% else %}
+            <form action="arrive" style="display: inline;">
+                <button class="btn btn-success">我来上班了</button>
+            </form>
+            <a href="{% url 'ask_leave' %}" class="btn btn-success" target="_blank">我要请假</a>
+        {% endif %}
     {% endif %}
     <hr>
-    个人信息  修改个人信息  小时工  现在的支付方式  请假
+    <a href="{% url 'user_leaves' %}" class="btn btn-success" target="_blank">请假历史记录</a>
     <hr>
     上个工作周期的工资  *距下一次发工资还有多少天
     <hr>

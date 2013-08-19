@@ -9,28 +9,63 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.contrib.auth import login, authenticate,logout
-from .forms import ResetPasswordForm, ChangePasswordForm
 from django.contrib.auth.forms import PasswordResetForm
 from django.shortcuts import redirect, render_to_response, HttpResponse,get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext,Template, Context
+from django.views.generic.edit import FormView
 
 from timecard.models import TimecardRecord
-from payrollapp.forms import PurchaseOrderForm
-from users.forms import ContactForm
+
+from users.forms import ContactForm, LeaveForm, ResetPasswordForm, ChangePasswordForm
+from users.models import Leave
+
+from payrollapp.views import ReqListView
+
+
+class LeavesView(ReqListView):
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.leave_set.all()
+
+    def get_template_names(self):
+        return "users/leaves.html"
+
+
+class LeaveCreate(FormView):
+    model = Leave
+    form_class = LeaveForm
+    success_url = '/user/leaves'
+    template_name = "users/leave_form.html"
+
+    def form_valid(self, form):
+        leave = form.save(commit=False)
+        leave.user_id = self.request.user.id
+        leave.save()
+        return super(LeaveCreate, self).form_valid(form)
+
 
 @login_required
 def user(request):
     user = request.user
     try:
         timecardrecord = user.timecardrecord_set.filter(date=date.today()).get()
+        arrive_time = timecardrecord.arrive_time.strftime('%Y-%m-%d %H:%M:%S')
         if timecardrecord and timecardrecord.leave_time:
             work_done = True
             work_time = timecardrecord.leave_time - timecardrecord.arrive_time
     except TimecardRecord.DoesNotExist:
         pass
 
+    try:
+        leave_record = user.leave_set.filter(date=date.today()).get()
+    except Leave.DoesNotExist:
+        pass
+
     return render_to_response('users/user.html', locals())
+
 
 @login_required
 def arrive(request):

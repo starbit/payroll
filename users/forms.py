@@ -7,6 +7,15 @@ from django.contrib.auth.models import User
 from django.forms.util import ErrorList
 from django.forms import ModelForm
 
+from users.models import Leave
+
+class LeaveForm(forms.ModelForm):
+    date = forms.DateField(label=u"请假日期")
+
+    class Meta:
+        model = Leave
+        exclude = ['user']
+
 class LoginForm(AuthenticationForm):
     username = forms.CharField(error_messages = {'required': u'用户名不能为空哦少侠～'})
     password = forms.CharField(error_messages = {'required': u'密码不能为空哦少侠～'},widget = forms.PasswordInput)

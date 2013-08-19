@@ -5,24 +5,17 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 
 from payrollapp.views import PurchaseOrderCreate, PurchaseOrderUpdate, PurchasesView, PurchaseOrderDelete
-from django.views.generic import DetailView
 
-class PurchaseDetailView(DetailView):
-    paginate_by = 10
-
-    def get_queryset(self):
-        user = self.request.user
-        return user.purchaseorder_set.all()
-
-    def get_template_names(self):
-        return "users/purchases.html"
-
+from users.views import LeavesView, LeaveCreate
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
 
     url(r'^user/$', 'users.views.user', name='user'),
+    url(r'^user/leaves$', login_required(LeavesView.as_view()), name='user_leaves'),
+    url(r'^user/ask_leave$', login_required(LeaveCreate.as_view()), name='ask_leave'),
+
     url(r'^user/arrive$', 'users.views.arrive', name='user_arrive'),
     url(r'^user/leave$', 'users.views.leave', name='user_leave'),
     url(r'^user/settings/(?P<item>\w*)$', 'users.views.settings', name='user_settings'),

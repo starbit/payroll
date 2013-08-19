@@ -1,12 +1,13 @@
 {% extends "base.html"  %}
-{% block title %}增加销售{% endblock %}
+{% block title %}请假{% endblock %}
 
 {% block more_header %}
 <link href="/static/css/jquery-ui.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" src="/static/js/jquery-ui.js"></script>
+
 <script>
 $(function() {
-    $( "#id_time" ).datepicker({
+    $( "#id_date" ).datepicker({
         dateFormat: 'yy-mm-dd',
         minDate: -0,
         maxDate: "+10D"
