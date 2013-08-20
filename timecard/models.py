@@ -12,6 +12,9 @@ class TimecardRecord(models.Model):
 
     def work_time(self):
         return self.leave_time - self.arrive_time
+    def __unicode__(self):
+        return self.user.username + " " + str(self.date)
+    
 
     @classmethod
     def find_or_create(cls, date):
