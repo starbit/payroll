@@ -10,6 +10,9 @@ class TimecardRecord(models.Model):
     date = models.DateField(blank=False)
     user = models.ForeignKey(User)
 
+    def work_time(self):
+        return self.leave_time - self.arrive_time
+
     @classmethod
     def find_or_create(cls, date):
         record = cls.objects.filter(date=date)

@@ -1,4 +1,5 @@
 from django_cron import CronJobBase, Schedule
+from users.models import pay_all_hourly_employees, pay_all_salaried, pay_all_commissioned
 
 class PayHourlyEmployee(CronJobBase):
     RUN_EVERY_MINS = 1 # ever
@@ -7,4 +8,6 @@ class PayHourlyEmployee(CronJobBase):
     code = 'users.pay_hourly_employee'    # a unique code
 
     def do(self):
-        print "sdfsdf"
+        pay_all_hourly_employees()
+        pay_all_salaried()
+        pay_all_commissioned()
