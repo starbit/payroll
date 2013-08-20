@@ -36,8 +36,8 @@ class UserProfile(models.Model):
     monthly_salary = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     commission_rate = models.DecimalField(max_digits=3, decimal_places=3, default=0)
     employee_type = models.CharField(max_length=15, choices=EMPLOYEE_TYPE, default='salaried')
-    bank_account = models.CharField(max_length=20, blank=True)
-    mailing_address = models.CharField(max_length=30, blank=True)
+    bank_account = models.CharField(max_length=20, blank=True, null=True)
+    mailing_address = models.CharField(max_length=30, blank=True, null=True)
 
     def get_pay_year_to_date(self):#从年初到今天的工资 其实就是把这段时间所有的paycheck的amount加起来
         pass

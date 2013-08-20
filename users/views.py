@@ -4,7 +4,7 @@ from datetime import datetime, date
 from django import forms
 from django.template.response import TemplateResponse
 from payroll.settings import DEFAULT_FROM_EMAIL
-# from django.db.transaction import commit_on_success
+from django.db.transaction import commit_on_success
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
@@ -17,7 +17,7 @@ from django.views.generic.edit import FormView
 
 from timecard.models import TimecardRecord
 
-from users.forms import ContactForm, LeaveForm, ResetPasswordForm, ChangePasswordForm
+from users.forms import ContactForm, LeaveForm, ResetPasswordForm, ChangePasswordForm, ChangeUserProfile
 from users.models import Leave
 
 from payrollapp.views import ReqListView
@@ -127,13 +127,26 @@ def _set_psw(request):
 @login_required
 def settings(request, item):
     if item == '':
-        return TemplateResponse(request, 'users/settings.html')
+        return change_profile(request)
     elif item == "password":
         return _set_psw(request)
     elif item == "payment":
         return change_payment_method(request)
     else:
         raise Http404("no setting")
+
+@login_required
+def change_profile(request):
+    userprofile = request.user.get_profile()
+    if request.method == 'POST':
+        form = ChangeUserProfile(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/user/settings')
+    else:
+        phone = userprofile.phone
+        form = ChangeUserProfile(initial={'phone': phone})
+    return TemplateResponse(request, 'users/settings.html',{'form':form,'phone':phone})
 
 @login_required
 def change_payment_method(request):

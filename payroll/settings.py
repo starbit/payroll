@@ -15,6 +15,7 @@ MANAGERS = ADMINS
 LOGIN_REDIRECT_URL='/user/'
 AUTH_PROFILE_MODULE = 'user.UserProfile'
 LOGIN_URL='/'
+AUTH_PROFILE_MODULE = "users.userprofile"
 
 
 DATABASES = {

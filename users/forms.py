@@ -6,8 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm, SetPasswordForm, Passw
 from django.contrib.auth.models import User
 from django.forms.util import ErrorList
 from django.forms import ModelForm
-
-from users.models import Leave
+from users.models import Leave, UserProfile
 
 class LeaveForm(forms.ModelForm):
     date = forms.DateField(label=u"请假日期")
@@ -63,3 +62,7 @@ class ContactForm(forms.Form):
             raise forms.ValidationError("元芳多说一点别那么小气啦!")
         return message
 
+class ChangeUserProfile(ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('phone', 'payment_method', 'bank_account', 'mailing_address',)
