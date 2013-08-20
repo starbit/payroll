@@ -81,7 +81,7 @@ def pay_all_hourly_employees():
                 continue
             try:
                 timecard = e.timecardrecord_set.filter(date=date.today()).get()
-                amount += int(timecard.work_time().total_seconds / 3600) * e.userprofile.hourly_salary
+                amount += timecard.work_hours * e.userprofile.hourly_salary
             except TimecardRecord.DoesNotExist:
                 pass
 
@@ -110,12 +110,12 @@ def pay_all_commissioned():
         amount = 0
 
         while date <= date.today():
-            date += timedelta(days=1)
             if len(e.leave_set.filter(date=date).all()) != 0:
                 levels += 1
 
             for p in e.purchaseorder_set.filter(time=date).all():
                 amount += p.amount
+            date += timedelta(days=1)
 
         amount = float(e.userprofile.monthly_salary) / 30 * (30 - levels) + float(amount * e.userprofile.commission_rate)
         e.paycheck_set.create(date=date, amount=amount)

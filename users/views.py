@@ -83,8 +83,10 @@ def user(request):
         leave_record = user.leave_set.filter(date=date.today()).get()
     except Leave.DoesNotExist:
         pass
-
-    employee_type = request.user.userprofile.employee_type_str
+    try:
+        employee_type = request.user.userprofile.employee_type_str
+    except:
+        pass
 
     return render_to_response('users/user.html', locals())
 
