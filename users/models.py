@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django_cron import CronJobBase, Schedule
 from django.db import models
 from django.contrib.auth.models import User
 from payrollapp.models import Paycheck
@@ -54,34 +53,10 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.name
 
-
-def create_user_profile(sender=None, instance=None, created=True, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
-
 class Leave(models.Model):
     user = models.ForeignKey(User)
     date = models.DateTimeField(blank=False)
 
-models.signals.post_save.connect(create_user_profile, sender=User)
 
 
 
-#下面的还没写好
-class PayHourlyEmployee(CronJobBase):
-    RUN_EVERY_MINS = 120 # ever
-    
-    schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
-    code = 'my_app.my_cron_job'    # a unique code
-    
-    def do(self):
-        pass    # do your thing here
-
-class PaySalariedEmployee(CronJobBase):
-    RUN_EVERY_MINS = 120 # every 2 hour
-    
-    schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
-    code = 'my_app.my_cron_job'    # a unique code
-    
-    def do(self):
-        pass    # do your thing here

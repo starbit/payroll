@@ -13,18 +13,17 @@ ADMINS = (
 
 MANAGERS = ADMINS
 LOGIN_REDIRECT_URL='/user/'
-AUTH_PROFILE_MODULE = 'user.UserProfile'
 LOGIN_URL='/'
-AUTH_PROFILE_MODULE = "users.userprofile"
+AUTH_PROFILE_MODULE = 'users.UserProfile'
 
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'payroll.db',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     }
@@ -112,8 +111,8 @@ MIDDLEWARE_CLASSES = (
 )
 
 CRON_CLASSES = (
-                'payrollapp.cron.PayHourlyEmployee',
-                'parollapp.cron.PaySalariedEmployee',
+                'users.cron.PayHourlyEmployee',
+                'users.cron.PaySalariedEmployee',
 )
 
 ROOT_URLCONF = 'payroll.urls'
