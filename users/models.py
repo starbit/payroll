@@ -26,18 +26,18 @@ EMPLOYEE_TYPE=(
                )
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User)
-    phone = models.CharField(max_length=11, null=True)
-    name = models.CharField(max_length=20)
+    user = models.OneToOneField(User)
+    phone = models.CharField(u'手机号码', max_length=11, null=True)
+    name = models.CharField(u'姓名', max_length=20)
     
-    payment_method = models.CharField(max_length=10, choices=PAYMENT_METHOD)
-    employee_status = models.CharField(max_length=20, choices=STATUS)
-    hourly_salary = models.DecimalField(max_digits=6, decimal_places=2, default=0)
-    monthly_salary = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    commission_rate = models.DecimalField(max_digits=3, decimal_places=3, default=0)
-    employee_type = models.CharField(max_length=15, choices=EMPLOYEE_TYPE, default='salaried')
-    bank_account = models.CharField(max_length=20, blank=True, null=True)
-    mailing_address = models.CharField(max_length=30, blank=True, null=True)
+    payment_method = models.CharField(u'工资支付方式', max_length=10, choices=PAYMENT_METHOD, default='pick')
+    employee_status = models.CharField(u'员工状态', max_length=20, choices=STATUS, default='working')
+    hourly_salary = models.DecimalField(u'小时工资', max_digits=6, decimal_places=2, default=0)
+    monthly_salary = models.DecimalField(u'月工资', max_digits=8, decimal_places=2, default=0)
+    commission_rate = models.DecimalField(u'业绩提成', max_digits=3, decimal_places=2, default=0)
+    employee_type = models.CharField(u'员工类型', max_length=15, choices=EMPLOYEE_TYPE, default='salaried')
+    bank_account = models.CharField(u'工资转帐银行账号', max_length=20, blank=True, null=True)
+    mailing_address = models.CharField(u'工资支票邮寄地址', max_length=30, blank=True, null=True)
 
     def get_pay_year_to_date(self):#从年初到今天的工资 其实就是把这段时间所有的paycheck的amount加起来
         pass

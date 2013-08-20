@@ -11,8 +11,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 class CustomUserAdmin(UserAdmin):
     inlines = [UserProfileInline, ]
-    list_display = ('username', 'email', 'date_joined', 'last_login', 'is_active' )
-    ordering = ('-id',)
 
 admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
