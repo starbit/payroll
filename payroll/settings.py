@@ -110,10 +110,9 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-CRON_CLASSES = (
+CRON_CLASSES = [
                 'users.cron.PayHourlyEmployee',
-                'users.cron.PaySalariedEmployee',
-)
+]
 
 ROOT_URLCONF = 'payroll.urls'
 
