@@ -18,15 +18,3 @@ class TimecardRecord(models.Model):
             return record
         else:
             return cls()
-
-
-
-
-class Timecard(models.Model):
-    timecard_history = models.ManyToManyField(TimecardRecord)
-    def get_total_hours():
-        pass
-    def add_record(self):
-        pass
-    def get_history(self):
-        pass

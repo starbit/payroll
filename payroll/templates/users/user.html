@@ -50,11 +50,12 @@
             <form action="arrive" style="display: inline;">
                 <button class="btn btn-success">我来上班了</button>
             </form>
-            <a href="{% url 'ask_leave' %}" class="btn btn-success" target="_blank">我要请假</a>
         {% endif %}
     {% endif %}
     <hr>
     <a href="{% url 'user_leaves' %}" class="btn btn-success" target="_blank">请假历史记录</a>
+    <a href="{% url 'ask_leave' %}" class="btn btn-success" target="_blank">我要请假</a>
+
     <hr>
     上个工作周期的工资  *距下一次发工资还有多少天
     <hr>

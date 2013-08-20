@@ -110,6 +110,11 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+CRON_CLASSES = (
+                'payrollapp.cron.PayHourlyEmployee',
+                'parollapp.cron.PaySalariedEmployee',
+)
+
 ROOT_URLCONF = 'payroll.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -137,6 +142,7 @@ INSTALLED_APPS = (
     'users',
     'payrollapp',
     'timecard',
+    'django_cron',
 )
 
 # A sample logging configuration. The only tangible logging
