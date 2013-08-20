@@ -13,6 +13,11 @@ class TimecardRecord(models.Model):
     def work_time(self):
         return self.leave_time - self.arrive_time
 
+    @property
+    def work_hours(self):
+        return int((self.work_time().total_seconds() + 1800) / 3600.0)
+
+
     @classmethod
     def find_or_create(cls, date):
         record = cls.objects.filter(date=date)

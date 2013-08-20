@@ -7,23 +7,23 @@ from payrollapp.models import PurchaseOrder
 from timecard.models import TimecardRecord
 
 STATUS=(
-        ('working','正常工作'),
-        ('leave_of_absence','请假'),
-        ('terminated','离职'),
-        ('retired','退休'),
+        ('working',u'正常工作'),
+        ('leave_of_absence',u'请假'),
+        ('terminated',u'离职'),
+        ('retired',u'退休'),
 
         )
 PAYMENT_METHOD=(
-                ('mail','把支票邮寄到指定的地址'),
-                ('transfer','转账到指定的银行账户'),
-                ('pick','直接去公司财务处领取支票'),
+                ('mail',u'把支票邮寄到指定的地址'),
+                ('transfer',u'转账到指定的银行账户'),
+                ('pick',u'直接去公司财务处领取支票'),
 
                 )
 
 EMPLOYEE_TYPE=(
-                ('hourly','钟点工'),
-                ('salaried','全职员工'),
-                ('commissioned','销售人员'),
+                ('hourly',u'钟点工'),
+                ('salaried',u'全职员工'),
+                ('commissioned',u'销售人员'),
                )
 
 class UserProfile(models.Model):
@@ -39,6 +39,10 @@ class UserProfile(models.Model):
     employee_type = models.CharField(u'员工类型', max_length=15, choices=EMPLOYEE_TYPE, default='salaried')
     bank_account = models.CharField(u'工资转帐银行账号', max_length=20, blank=True, null=True)
     mailing_address = models.CharField(u'工资支票邮寄地址', max_length=30, blank=True, null=True)
+
+    @property
+    def employee_type_str(self):
+        return filter(lambda x:x[0] == self.employee_type, EMPLOYEE_TYPE)[0][1]
 
     def get_pay_year_to_date(self):#从年初到今天的工资 其实就是把这段时间所有的paycheck的amount加起来
         pass
@@ -77,7 +81,7 @@ def pay_all_hourly_employees():
                 continue
             try:
                 timecard = e.timecardrecord_set.filter(date=date.today()).get()
-                amount += int(timecard.work_time().total_seconds / 3600) * e.userprofile.hourly_salary()
+                amount += int(timecard.work_time().total_seconds / 3600) * e.userprofile.hourly_salary
             except TimecardRecord.DoesNotExist:
                 pass
 

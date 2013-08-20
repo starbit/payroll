@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from payrollapp.views import PurchaseOrderCreate, PurchaseOrderUpdate, PurchasesView, PurchaseOrderDelete
 
-from users.views import LeavesView, LeaveCreate
+from users.views import LeavesView, LeaveCreate, PayView, TimeView
 
 admin.autodiscover()
 
@@ -15,6 +15,10 @@ urlpatterns = patterns('',
     url(r'^user/$', 'users.views.user', name='user'),
     url(r'^user/leaves$', login_required(LeavesView.as_view()), name='user_leaves'),
     url(r'^user/ask_leave$', login_required(LeaveCreate.as_view()), name='ask_leave'),
+
+    url(r'^user/pays$', login_required(PayView.as_view()), name='pays'),
+    url(r'^user/times$', login_required(TimeView.as_view()), name='times'),
+
 
     url(r'^user/arrive$', 'users.views.arrive', name='user_arrive'),
     url(r'^user/leave$', 'users.views.leave', name='user_leave'),

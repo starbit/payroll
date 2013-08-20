@@ -31,7 +31,8 @@
             <li><a href='/logout/'>退出</a></li>
         </ul>
     </div>
-    <h1>你好，{{request.user.username}}</h1>
+    <hr>
+    <h1>你好，{{request.user.username}}({{employee_type}})</h1>
     <hr>
     {% if leave_record %}
         <span>今天您已经请假</span>
@@ -66,7 +67,7 @@
     <a href="{% url 'new_purchase' %}" class="btn btn-success" target="_blank">添加销售记录</a>
     <a href="purchases" class="btn btn-success" target="_blank">销售记录历史</a>
     <hr>
-    查看工作时间报告
+    <a href="{% url 'times' %}" class="btn btn-success">查看工作时间报告</a>
     <hr>
-    查看年初至今工资报告
+    <a href="{% url 'pays' %}" class="btn btn-success">查看工资报告</a>
 {% endblock %}

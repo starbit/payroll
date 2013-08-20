@@ -33,6 +33,26 @@ class LeavesView(ReqListView):
     def get_template_names(self):
         return "users/leaves.html"
 
+class PayView(ReqListView):
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.paycheck_set.all()
+
+    def get_template_names(self):
+        return "users/pays.html"
+
+class TimeView(ReqListView):
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = self.request.user
+        return user.timecardrecord_set.all()
+
+    def get_template_names(self):
+        return "users/times.html"
+
 
 class LeaveCreate(FormView):
     model = Leave
@@ -63,6 +83,8 @@ def user(request):
         leave_record = user.leave_set.filter(date=date.today()).get()
     except Leave.DoesNotExist:
         pass
+
+    employee_type = request.user.userprofile.employee_type_str
 
     return render_to_response('users/user.html', locals())
 
