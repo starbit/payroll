@@ -1,7 +1,35 @@
 {% extends "base.html"  %}
 {% block title %}请假历史{% endblock %}
+
+{% block more_header %}
+<link href="/static/css/jquery-ui.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="/static/js/jquery-ui.js"></script>
+<script>
+$(function() {
+    $( "#from_date" ).datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+
+    $( "#to_date" ).datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+</script>
+{% endblock %}
+
 {% block content %}
+
 <h1>{{ request.user }}的请假历史</h1>
+
+<div class="well">
+    <form action="" method="get">
+        <input id="from_date" name="from_date" type="text" placeholder="开始时间">
+        <input id="to_date" name="to_date" type="text" placeholder="结束时间">
+        <input type="submit" value="查询" class="btn">
+        <a href="{% url 'user_leaves' %}" class="btn">全部</a>
+    </form>
+</div>
+
 <a href="{% url 'user'%}" class="btn">返回</a>
 <ul>
     {% for leave in object_list %}

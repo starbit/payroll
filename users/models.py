@@ -40,6 +40,9 @@ class UserProfile(models.Model):
     bank_account = models.CharField(u'工资转帐银行账号', max_length=20, blank=True, null=True)
     mailing_address = models.CharField(u'工资支票邮寄地址', max_length=30, blank=True, null=True)
 
+    def is_hourly(self):
+        return self.employee_type == 'hourly'
+
     @property
     def employee_type_str(self):
         return filter(lambda x:x[0] == self.employee_type, EMPLOYEE_TYPE)[0][1]

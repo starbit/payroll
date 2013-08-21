@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from django import forms
 from django.template.response import TemplateResponse
 from payroll.settings import DEFAULT_FROM_EMAIL
@@ -14,6 +14,7 @@ from django.shortcuts import redirect, render_to_response, HttpResponse,get_obje
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext,Template, Context
 from django.views.generic.edit import FormView
+from django.utils.datastructures import MultiValueDictKeyError
 
 from timecard.models import TimecardRecord
 
@@ -28,7 +29,12 @@ class LeavesView(ReqListView):
 
     def get_queryset(self):
         user = self.request.user
-        return user.leave_set.all()
+        try:
+            from_date = datetime.strptime(self.request.GET['from_date'], "%Y-%m-%d")
+            to_date = datetime.strptime(self.request.GET['to_date'], "%Y-%m-%d")
+            return user.leave_set.filter(date__gte=from_date, date__lte=to_date).all()
+        except:
+            return user.leave_set.all()
 
     def get_template_names(self):
         return "users/leaves.html"
@@ -48,7 +54,13 @@ class TimeView(ReqListView):
 
     def get_queryset(self):
         user = self.request.user
-        return user.timecardrecord_set.all()
+        try:
+            from_date = datetime.strptime(self.request.GET['from_date'], "%Y-%m-%d")
+            to_date = datetime.strptime(self.request.GET['to_date'], "%Y-%m-%d")
+            return user.timecardrecord_set.filter(date__gte=from_date, date__lte=to_date).all()
+        except:
+            return user.timecardrecord_set.all()
+
 
     def get_template_names(self):
         return "users/times.html"
@@ -66,6 +78,9 @@ class LeaveCreate(FormView):
         leave.save()
         return super(LeaveCreate, self).form_valid(form)
 
+MONTH_DAY = [
+  0,31,28,31,30,31,30,31,31,30,31,30,31
+]
 
 @login_required
 def user(request):
@@ -77,7 +92,7 @@ def user(request):
         arrive_time = timecardrecord.arrive_time.strftime('%Y-%m-%d %H:%M:%S')
         if timecardrecord and timecardrecord.leave_time:
             work_done = True
-            work_time = timecardrecord.leave_time - timecardrecord.arrive_time
+            work_time = str(timecardrecord.leave_time - timecardrecord.arrive_time).split('.')[0]
     except TimecardRecord.DoesNotExist:
         pass
 
@@ -89,6 +104,12 @@ def user(request):
         employee_type = request.user.userprofile.employee_type_str
     except:
         pass
+
+    today = date.today()
+    if user.userprofile.is_hourly():
+        next_pay = (today - timedelta(days=today.weekday() - 4)).strftime("%Y-%m-%d")
+    else:
+        next_pay = date(today.year, today.month, MONTH_DAY[today.month]).strftime("%Y-%m-%d")
 
     return render_to_response('users/user.html', locals())
 
