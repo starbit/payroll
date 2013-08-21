@@ -136,7 +136,7 @@ def reset_psw(request):
     if request.method == 'POST':
         form = PasswordResetForm(request.POST)
         if form.is_valid():
-            form.save(domain_override=request.get_host(), from_email=DEFAULT_FROM_EMAIL, email_template_name="users/password_reset_email.html")
+            form.save(domain_override=request.get_host(), from_email=DEFAULT_FROM_EMAIL, email_template_name='users/password_reset_email.html')
             return render_to_response('users/reset_psw_sended.html', {})
         else:
             return TemplateResponse(request, 'users/reset_psw.html', {'form': form})
