@@ -2,13 +2,6 @@
 {% block title %}修改个人信息{% endblock %}
 {% block content %}
 
-<div class="span5 offset1">
-    <ul class="nav nav-pills" style="font-size:18px">
-        <li><a href='/user/settings/password'>修改密码</a></li>
-        <li><a href='/user/settings/payment'>修改工资支付信息</a></li>
-        <li><a href='/logout/'>退出</a></li>
-    </ul>
-</div>
 <div class="offset2">
     <form action="." class="form-horizontal" method="POST" style="padding:20px 0 0 0;">{%csrf_token%}
         <fieldset>
@@ -23,22 +16,22 @@
                 <div class="control">
                     <input name="phone" type="text" value={{phone}} class="span3" >{{form.phone.errors.0}}
                 </div>
+                
             </div>
         </fieldset>
-            
         <fieldset>
             <div id="legend" class="">
+                <a href='/user/settings/password'style="text-decoration:none;"><legend class="">修改密码</legend></a>
+            </div>
+
+        </fieldset>
+        <fieldset>
+            <div id="legend" class=""style="padding:30px 0 0 0">
                 <legend class="">支付信息</legend>
             </div>
 
             <div class="control-group">
-                <label class="control-label">支付方式</label>
-                <label class="radio checked">
-                    <span class="icon"></span>
-                    <span class="icon-to-fade"></span>
-                    <input type="radio" name="payment_method" value="pick">财务处自取
-                </label>
-                
+                <label class="control-label">支付方式</label>                
                 <select name="payment_method" class="input-xlarge">
                     <option value="pick">直接去公司财务处领取支票</option>
                     <option value="transfer">转账到指定的银行账户</option>

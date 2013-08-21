@@ -72,6 +72,8 @@ def user(request):
     user = request.user
     try:
         timecardrecord = user.timecardrecord_set.filter(date=date.today()).get()
+        profile = user.get_profile()
+        name = profile.name
         arrive_time = timecardrecord.arrive_time.strftime('%Y-%m-%d %H:%M:%S')
         if timecardrecord and timecardrecord.leave_time:
             work_done = True
@@ -154,10 +156,8 @@ def settings(request, item):
         return change_profile(request)
     elif item == "password":
         return _set_psw(request)
-    elif item == "payment":
-        return change_payment_method(request)
     else:
-        raise Http404("no setting")
+        return server_error_404(request)
 
 @login_required
 def change_profile(request):
@@ -172,9 +172,6 @@ def change_profile(request):
         form = ChangeUserProfile(initial={'phone': phone})
     return TemplateResponse(request, 'users/settings.html',{'form':form,'phone':phone})
 
-@login_required
-def change_payment_method(request):
-    return
 
 @login_required
 def contact(request):

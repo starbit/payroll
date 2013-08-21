@@ -10,31 +10,38 @@
     <link href="/static/css/flat-ui.css" type="text/css" rel="stylesheet">
     <style type="text/css">
             html{
-                padding:10px 0px;
+                padding:0px 0px;
             }
             body {
-                padding-top: 20px;
+                padding-top: 0px;
                 padding-bottom: 40px;
+
             }
             body, input, button, textarea, .page-stat_number {
                 font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
             }
             .form-actions{
-                background-color: #fff;
+                background-color:#ECF0F1;
                 border-style:none
             }
-            div{margin:0;border:0;padding:0;}
+            div{
+                margin:0;
+                border:0;
+                padding:0;
+            }
 
             fieldset {
                 padding: 20px 0 ;
             }
 
             label{
-                font-size:17px;
+                font-size:20px;
+                padding:50px 0 0 0;
 
             }
             .form-horizontal .control-label {
                 text-align:left;
+                background-color:none;
             }
 
 
@@ -45,12 +52,41 @@
                 font-size:23px;
                 font-weight:bold;
                 width:940px;
+                color:#16A085;
             }
             .container{
                 min-height:84px;
             }
             a:hover{
                 text-decoration:none;
+            }
+            .header{
+                color:#95A5A6;
+                text-decoration:none;
+
+            }
+            .name{
+                text-decoration:none;
+            }
+            .name:hover{
+                text-decoration:none;
+                
+
+            }
+            .mua{
+                font-size:20px;
+                color:#808080;
+                text-decoration:none;
+
+            }
+            .mua:hover{
+                text-decoration:none;
+
+            }
+            .header:hover{
+                color:#1abc9c;
+                text-decoration:none;
+
             }
         </style>
             <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -77,10 +113,47 @@
 {% block more_header %} {% endblock %}
 </head>
 <body>
-    <div class = "container">
-        {% block content %}
-        {% endblock %}
+    {% block header%}
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2">
+            </div>
+            <div class="span2"style="padding:20px 0 30px 0 ">
+                <a href='/user/'><img src="/static/img/payroll.png" alt="PayrollApp"></a>
+            </div>
+            <div class="span2">
+            </div>
+            <div class="span4" >
+                <div class="row-fluid"style="padding:35px 0 30px 0;font-size:22px">
+                    <div class="span3 offset1"style=""><a class="header"href="/user/settings">个人信息</a></div>
+                    <div class="span2 offset2"style=""><a class="header"href="/contact/"><span class="ss-icon"></span>吐槽</a></div>
+                    <div class="span2 offset2"style=""><a class="header"href="/logout"style="">退出</a></div>
+                </div>
+            </div>
+            <div class="span2">
+            </div>
+        </div>
     </div>
+    {% endblock %}
+
+    {%block color%}
+    <div style="background-color:#ECF0F1;min-height:1000px">
+        <div class="container-fluid">
+            <div class="row-fluid" style=>
+                <div class="span10 offset2"style="color:#808080">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {%endblock%}
+        
+        
+        
+        
+        
     <!-- Load JS here for greater good =============================-->
     <script src='/static/js/jquery-1.9.1.min.js'></script>
     <script src="/static/js/bootstrap.min.js"></script>

@@ -1,30 +1,41 @@
 {% extends "base.html" %}
 
 {% block title %}Payroll{% endblock %}
+{% block header%}
+<div  style="background-color:#1abc9c; height:100px">
+</div>
+{% endblock %}
+{%block color%}
+<div class="container-fluid offset1">
 
-{% block content %}
 <form class="form" method="post">
     {%csrf_token%}
-    <div class="login">
+    <div class="login"style="padding:100px 0 60px 0px">
       <div class="login-screen">
         {{form.non_field_errors}}
         <div class="login-icon">
-            <img src="/static/img/logo.png" alt="Welcome to PayrollApp">
-            <h4>Welcome to <small>PayrollApp</small></h4>
+            <img src="/static/img/logo.png" alt="Welcome to PayrollApp"style="padding:60px 0 0 0 ">
+            <h4><span style="padding:40px 0 0 0">Welcome to <small>Payroll App</small></h4>
         </div>
         <div class="login-form">
             <div class="control-group">
               <input type="text" name="username" class="login-field" value="" placeholder="账号" id="id_username">
-              <span>{{form.username.errors.0}}</span>
-          </div>
+              <label class="login-field-icon fui-man-16" for="login-name"></label>{{form.username.errors.0}}
+            </div>
 
-          <div class="control-group">
+            <div class="control-group">
               <input type="password" name="password"class="login-field" value="" placeholder="密码" id="login-pass">
+              <label class="login-field-icon fui-lock-16" for="login-pass"></label>
               <span class="clearfix">{{form.password.erros.0}}</span>
-          </div>
-          <button type="submit" class="btn btn-primary btn-large btn-block" href="#">登录</button>
-          <a class="login-link" href="/reset/">忘记密码?</a>
+            </div>
+            <button type="submit" class="btn btn-primary btn-large btn-block" href="#">登录</button>
+            <a class="login-link" href="/reset/"style="text-decoration:none;">忘记密码?</a>
+        </div>
       </div>
-  </div>
+    </div>
+</form>
 </div>
+<div  style="background-color:#1abc9c;height:400px">
+</div>
+
 {% endblock %}
