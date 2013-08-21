@@ -177,5 +177,5 @@ DEFAULT_FROM_EMAIL = 'marvin@xueni.net'
 EMAIL_HOST = 'smtp.exmail.qq.com'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'marvin@xueni.net'
-EMAIL_HOST_PASSWORD = '1feelsohappy'
+EMAIL_HOST_PASSWORD = '1feelhappy'
 
