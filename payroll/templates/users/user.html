@@ -1,106 +1,142 @@
 {% extends "base.html" %}
-
+{% block title %}PayrollApp{% endblock %}
 {% block more_header %}
-    <script>
-        $(function(){
-            {% if arrive_time %}
-                var base_time = new Date("{{arrive_time}}");
-            {% else %}
-                var base_time = Date.now();
-            {% endif %}
-            function show_time() {
-                var during = parseInt((Date.now() - base_time) / 1000, 10)
-                var hours = parseInt(during / 3600, 10)
-                during = during % 3600
-                var minutes = parseInt(during / 60, 10)
-                during = during % 60
-                var seconds = during
-                $('#time_field').html(hours + "小时" + minutes + "分钟" + seconds + "秒");
-            };
 
-            setInterval(show_time, 1000);
-        })
-    </script>
+<script>
+$(function(){
+    {% if arrive_time %}
+    var base_time = new Date("{{arrive_time}}");
+    {% else %}
+    var base_time = Date.now();
+    {% endif %}
+    function show_time() {
+        var during = parseInt((Date.now() - base_time) / 1000, 10)
+        var hours = parseInt(during / 3600, 10)
+        during = during % 3600
+        var minutes = parseInt(during / 60, 10)
+        during = during % 60
+        var seconds = during
+        $('#time_field').html(hours + "小时" + minutes + "分钟" + seconds + "秒");
+    };
+
+    setInterval(show_time, 1000);
+
+    $('a[href="#ask_leave"]').click(function(e){
+        e.preventDefault();
+        $.get($(this).data('url'), function(data){
+            $('#ask_leave .modal-body').html(data);
+            $('#ask_leave').modal();
+        });
+    });
+
+    $('a[href="#add_purchase"]').click(function(e){
+        e.preventDefault();
+        $.get($(this).data('url'), function(data){
+            $('#add_purchase .modal-body').html(data);
+            $('#add_purchase').modal();
+        });
+    })
+
+})
+</script>
+
 {% endblock%}
-
 {% block content %}
-    <div style="padding:80px 0 0 0; margin:0px 20px 0px 20px;font-size:42px;text-align:center;">
-        <div class="row-fluid">
-            <div class="span2"style="padding:18px 0 18px 0">
-                早上好
-            </div>
-            <div class="span2"style="background-color:#1abc9c;padding:18px 0 18px 0">
-                <a class="name"href="/user/settings/">
+
+<div style="padding:80px 0 0 0; margin:0px 20px 0px 20px;font-size:42px;text-align:center;">
+    <div class="row-fluid">
+        <div class="span2"style="padding:18px 0 18px 0">
+            早上好
+        </div>
+        <div class="span2"style="background-color:#1abc9c;padding:18px 0 18px 0">
+            <a class="name"href="/user/settings/">
                 <span style="color:white;font-size:42px;">
                     {{name}}</a>
                 </span>
-                </a>
-            </div>
-            <div class="span1"style="padding:18px 0 18px 0">，</div>
-            <div class="span2"style="padding:18px 0 18px 0">
-                今天是
-            </div>
-            <div class="span2"style="background-color:#F1C40F;color:white;padding:18px 0 18px 0">
-                <span style="font-size:42px">星期四</span>
-            </div>
+            </a>
+        </div>
+        <div class="span1"style="padding:18px 0 18px 0">，</div>
+        <div class="span2"style="padding:18px 0 18px 0">
+            今天是
+        </div>
+        <div class="span2"style="background-color:#F1C40F;color:white;padding:18px 0 18px 0">
+            <span style="font-size:42px">星期四</span>
         </div>
     </div>
+</div>
 
 
-    <div class="row-fluid"style="padding:50px 0 0 0">
-        <div class="span4">
-            <img data-img="svg" src="/static/img/talk.svg" alt="">
-                <div class="offset1"style="padding:15px 0 50px 0">
-                    <a href="{% url 'times' %}"class="mua">查看工作时间报告 <i class="icon-chevron-right"></i>
-                    </a>
-                </div>
-            
-            {% if leave_record %}
-            <span>今天您已经请假</span>
-            {% else %}
-            {% if timecardrecord %}
-            {% if work_done %}
-            <span>今天工作了{{ work_time }}</span>
-            {% else %}
-            <span>今天已经工作:</span>
-            <span id="time_field"></span>
-            <form action="leave">
-                <button class="btn btn-danger btn-warning span5">我下班班了</button>
-            </form>
-            {% endif%}
-            {% else %}
-            <form action="arrive" style="display: inline;">
-                <button class="btn btn-primary btn-block span5">我来上班了</button>
-            </form>
-            {% endif %}
-            {% endif %}
-
-
+<div class="row-fluid"style="padding:50px 0 0 0">
+    <div class="span4">
+        <img data-img="svg" src="/static/img/talk.svg" alt="">
+        <div class="offset1"style="padding:15px 0 50px 0">
+            <a href="{% url 'times' %}"class="mua">查看工作时间报告 <i class="icon-chevron-right"></i>
+            </a>
         </div>
-        <div class="span4"style="padding:25px 0 0 0">
-            <img data-img="svg" src="/static/img/heart.svg" alt="">
-            <div class="offset1"style="padding:30px 0 50px 0"> <a href="{% url 'user_leaves' %}"target="_blank"class="mua">查看请假记录</a></div>
-                
-            <a href="{% url 'ask_leave' %}" class="span5 btn-block btn btn-primary" target="_blank">我要请假</a>
 
-        </div>
-        <div class="span4"style="padding:25px 0 0 0">
-            <img data-img="svg" src="/static/img/whale.svg" alt="">
-            <div class="offset1"style="padding:40px 0 50px 0"><span class="mua">距下一次发工资还有X天</span></div>
-                
-            <a href="{% url 'pays' %}" class="span5 btn-block btn btn-primary">查看工资情况</a>
+        {% if leave_record %}
+        <span>今天您已经请假</span>
+        {% else %}
+        {% if timecardrecord %}
+        {% if work_done %}
+        <span>今天工作了{{ work_time }}</span>
+        {% else %}
+        <span>今天已经工作:</span>
+        <span id="time_field"></span>
+        <form action="leave">
+            <button class="btn btn-danger btn-warning span5">我下班班了</button>
+        </form>
+        {% endif%}
+        {% else %}
+        <form action="arrive" style="display: inline;">
+            <button class="btn btn-primary btn-block span5">我来上班了</button>
+        </form>
+        {% endif %}
+        {% endif %}
 
 
-
-        </div>
     </div>
-    <div class="row-fluid"style="padding:50px 0 0 0">
-        <div class="span4"></div>
-        <div class="span4">
-            <img data-img="svg" src="/static/img/leaf.svg" alt="">
-            <div class="offset1"style="padding:30px 0 50px 0"><a href="purchases" target="_blank"class="mua">查看销售记录</a></div>
-            <a href="{% url 'new_purchase' %}" class="btn-block btn btn-primary span5" target="_blank">添加销售记录</a>
-        </div>
-        <div class="span4"></div>
+    <div class="span4"style="padding:25px 0 0 0">
+        <img data-img="svg" src="/static/img/heart.svg" alt="">
+        <div class="offset1"style="padding:30px 0 50px 0"> <a href="{% url 'user_leaves' %}"target="_blank"class="mua">查看请假记录</a></div>
+
+        <a href="#ask_leave" data-url="{% url 'ask_leave' %}" class="span5 btn-block btn btn-primary">我要请假</a>
+
     </div>
+    <div class="span4"style="padding:25px 0 0 0">
+        <img data-img="svg" src="/static/img/whale.svg" alt="">
+        <div class="offset1"style="padding:40px 0 50px 0"><span class="mua">距下一次发工资还有X天</span></div>
+
+        <a href="{% url 'pays' %}" class="span5 btn-block btn btn-primary">查看工资情况</a>
+
+    </div>
+</div>
+
+<div class="row-fluid"style="padding:50px 0 0 0">
+    <div class="span4"></div>
+    <div class="span4">
+        <img data-img="svg" src="/static/img/leaf.svg" alt="">
+        <div class="offset1"style="padding:30px 0 50px 0"><a href="purchases" target="_blank"class="mua">查看销售记录</a></div>
+        <a href="#add_purchase" data-url="{% url 'new_purchase' %}" class="btn-block btn btn-primary span5" target="_blank">添加销售记录</a>
+    </div>
+    <div class="span4"></div>
+</div>
+
+
+<div id="add_purchase" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">哥赚钱了，你知道么？</h3>
+    </div>
+    <div class="modal-body"></div>
+</div>
+
+<div id="ask_leave" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">请假，你懂么？</h3>
+    </div>
+    <div class="modal-body"></div>
+</div>
+
 {% endblock %}
