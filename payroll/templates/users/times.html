@@ -29,11 +29,10 @@ $(function() {
     </form>
 </div>
 
-<a href="{% url 'user'%}" class="btn">返回</a>
 <ul>
     {% for timerecord in object_list %}
 
-    <li>{{ timerecord.date|date }} || {{ timerecord.work_hours }}</li>
+    <li>{{ timerecord.date|date }} || {{ timerecord.work_hours }}小时</li>
     {% empty %}
     <li>暂无记录</li>
     {% endfor %}

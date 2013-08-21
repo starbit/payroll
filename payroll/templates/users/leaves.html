@@ -19,7 +19,7 @@ $(function() {
 
 {% block content %}
 
-<h1>{{ request.user }}的请假历史</h1>
+<h1 style="padding:20px 0 40px 0">{{ request.user }}的请假历史</h1>
 
 <div class="well">
     <form action="" method="get">
@@ -30,7 +30,6 @@ $(function() {
     </form>
 </div>
 
-<a href="{% url 'user'%}" class="btn">返回</a>
 <ul>
     {% for leave in object_list %}
 

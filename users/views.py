@@ -2,6 +2,7 @@
 
 from datetime import datetime, date, timedelta
 from django import forms
+from django.contrib.auth.models import User
 from django.template.response import TemplateResponse
 from payroll.settings import DEFAULT_FROM_EMAIL
 from django.db.transaction import commit_on_success
@@ -190,8 +191,10 @@ def change_profile(request):
             return redirect('/user/settings')
     else:
         phone = userprofile.phone
-        form = ChangeUserProfile(initial={'phone': phone})
-    return TemplateResponse(request, 'users/settings.html',{'form':form,'phone':phone})
+        bank_account = userprofile.bank_account
+        mailing_address = userprofile.mailing_address
+        form = ChangeUserProfile(initial={'phone': phone, 'bank_account':bank_account, 'mailing_address':mailing_address})
+    return TemplateResponse(request, 'users/settings.html',locals)
 
 
 @login_required
