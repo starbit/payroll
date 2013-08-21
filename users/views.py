@@ -85,10 +85,10 @@ MONTH_DAY = [
 @login_required
 def user(request):
     user = request.user
+    profile = user.get_profile()
+    name = profile.name
     try:
         timecardrecord = user.timecardrecord_set.filter(date=date.today()).get()
-        profile = user.get_profile()
-        name = profile.name
         arrive_time = timecardrecord.arrive_time.strftime('%Y-%m-%d %H:%M:%S')
         if timecardrecord and timecardrecord.leave_time:
             work_done = True
