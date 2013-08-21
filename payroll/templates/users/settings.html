@@ -14,7 +14,7 @@
             <div class="control-group"style="">
                 <label class="control-label">手机号码</label>
                 <div class="control">
-                    <input name="phone" type="text" value={{phone}} class="span3" >{{form.phone.errors.0}}
+                    <input name="phone" type="text" class="span3" value={{phone}} >{{form.phone.errors.0}}
                 </div>
                 
             </div>
@@ -32,7 +32,7 @@
 
             <div class="control-group">
                 <label class="control-label">支付方式</label>                
-                <select name="payment_method" class="input-xlarge">
+                <select name="payment_method" default=""class="input-xlarge">
                     <option value="pick">直接去公司财务处领取支票</option>
                     <option value="transfer">转账到指定的银行账户</option>
                     <option value="mail">把支票邮寄到指定的地址</option>

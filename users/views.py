@@ -193,8 +193,9 @@ def change_profile(request):
         phone = userprofile.phone
         bank_account = userprofile.bank_account
         mailing_address = userprofile.mailing_address
-        form = ChangeUserProfile(initial={'phone': phone, 'bank_account':bank_account, 'mailing_address':mailing_address})
-    return TemplateResponse(request, 'users/settings.html',locals)
+        payment_method = userprofile.payment_method
+        form = ChangeUserProfile(initial={'phone': phone, 'bank_account':bank_account, 'mailing_address':mailing_address,'payment_method':payment_method})
+    return TemplateResponse(request, 'users/settings.html',locals())
 
 
 @login_required

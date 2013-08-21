@@ -54,12 +54,12 @@ TOPIC=(
 
 class ContactForm(forms.Form):
     topic = forms.ChoiceField(choices=TOPIC,label="主题")
-    message = forms.CharField(widget=forms.Textarea(),label="内容",error_messages = {'required': u'内容为空？元芳，这不科学。'})
+    message = forms.CharField(widget=forms.Textarea(),label="内容",error_messages = {'required': u'内容为空？少侠，这不科学。'})
     sender = forms.EmailField(required=False,label="联系邮箱")
     def clean_message(self):
         message = self.cleaned_data.get('message','')
         if len(message) < 8:
-            raise forms.ValidationError("元芳多说一点别那么小气啦!")
+            raise forms.ValidationError("少侠多说一点别那么小气啦!")
         return message
 
 class ChangeUserProfile(ModelForm):

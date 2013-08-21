@@ -111,7 +111,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 CRON_CLASSES = [
-                'users.cron.PayHourlyEmployee',
+                'users.cron.PayEmployee',
 ]
 
 ROOT_URLCONF = 'payroll.urls'
