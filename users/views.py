@@ -187,7 +187,11 @@ def change_profile(request):
     if request.method == 'POST':
         form = ChangeUserProfile(request.POST)
         if form.is_valid():
-            form.save()
+            userprofile.phone = form.cleaned_data['phone']
+            userprofile.bank_account = form.cleaned_data['bank_account']
+            userprofile.mailing_address = form.cleaned_data['mailing_address']
+            userprofile.payment_method = form.cleaned_data['payment_method']
+            userprofile.save()
             return redirect('/user/settings')
     else:
         phone = userprofile.phone
